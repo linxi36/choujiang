@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>抽奖</title>
+    <style>
+        td {
+            background: #666;
+            width: 100px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .select {
+            background: #F60;
+        }
+
+        .start {
+            background: #F60;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <table id='table'>
+        <tr>
+            <td class="select">1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td></td>
+            <td class="start">开始</td>
+            <td></td>
+            <td>7</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>12</td>
+            <td>11</td>
+            <td>10</td>
+            <td>9</td>
+        </tr>
+    </table>
+    <script>
+        var start = document.getElementsByClassName('start')[0];
+        var tdList = document.getElementById('table').getElementsByTagName('td');
+        var tdID = 0;    //tdArr的索引
+        var tdAry = [0, 1, 2, 3, 4, 9, 14, 19, 24, 23, 22, 21, 15, 10, 5];
+        var runNum;   //颜色在那个数字上
+        var run;   //定时器
+        var flag = true;   //加一个锁进行判断当前是否可以点击
+        start.onclick = function () {
+            if (flag == false) {
+                return
+            }
+            runNum = 0;
+            maxNum = 16 * 3 + parseInt(Math.random() * 16);
+            run = setInterval(playFunc, 200);
+            flag = false;
+
+        }
+        function playFunc() {
+            //把上次的取消选中，把这次加上选中的效果
+            tdList[tdAry[tdID]].className = '';
+            tdID = tdID + 1 >= tdAry.length ? 0 : tdID + 1;
+            tdList[tdAry[tdID]].className = 'select';
+            runNum++;
+            if (runNum > maxNum) {
+                clearInterval(run);
+                flag = true;
+                return;
+            }
+            if (runNum == 6) {
+                clearInterval(run);
+                run = setInterval(playFunc, 20);
+            }
+            if (runNum + 6 == maxNum) {
+                clearInterval(run);
+                run = setInterval(playFunc, 200);
+            }
+        }
+    </script>
+</body>
+
+</html>
